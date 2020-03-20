@@ -6,6 +6,7 @@ public class HashTable {
 
     public Entry[] array;
     private int sizeOf;
+    private int places;
     private final float loadFactor;
     private int threshold;
 
@@ -13,6 +14,7 @@ public class HashTable {
         array = new Entry[initialCapacity];
         loadFactor = 0.5f;
         sizeOf = 0;
+        places = initialCapacity;
         threshold = (int)(initialCapacity * loadFactor);
     }
 
@@ -20,6 +22,7 @@ public class HashTable {
         array = new Entry[initialCapacity];
         loadFactor = initialLoadFactor;
         sizeOf = 0;
+        places = initialCapacity;
         threshold = (int)(initialCapacity * loadFactor);
     }
 
@@ -33,6 +36,7 @@ public class HashTable {
 
     Entry[] arrayResize() {
         Entry[] bigArray = new Entry[array.length * 2];
+        places = bigArray.length;
 
         for (int i = 0; i < array.length; i++) {
             if (array[i] == null || array[i].deleted) {
@@ -45,7 +49,9 @@ public class HashTable {
             }
 
             bigArray[hash] = new Entry(array[i].key, array[i].value);
+            places--;
         }
+
 
         return bigArray;
     }
@@ -59,9 +65,12 @@ public class HashTable {
 
         if (array[hash] == null || (array[hash].deleted)) {
             sizeOf++;
+            if (array[hash] == null) {
+                places--;
+            }
             array[hash] = new Entry(key, value);
 
-            if (threshold <= sizeOf) {
+            if (threshold <= sizeOf || places < (int) Math.sqrt(array.length)) {
                 array = arrayResize();
                 setThreshold(array.length);
             }
