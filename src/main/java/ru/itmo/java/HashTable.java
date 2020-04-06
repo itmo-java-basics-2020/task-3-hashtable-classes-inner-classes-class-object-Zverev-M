@@ -11,11 +11,7 @@ public class HashTable {
     private int threshold;
 
     HashTable(int initialCapacity) {
-        array = new Entry[initialCapacity];
-        loadFactor = 0.5f;
-        sizeOf = 0;
-        places = initialCapacity;
-        threshold = (int)(initialCapacity * loadFactor);
+        this(initialCapacity, 0.5f);
     }
 
     HashTable(int initialCapacity, float initialLoadFactor) {
@@ -23,7 +19,7 @@ public class HashTable {
         loadFactor = initialLoadFactor;
         sizeOf = 0;
         places = initialCapacity;
-        threshold = (int)(initialCapacity * loadFactor);
+        threshold = (int) (initialCapacity * loadFactor);
     }
 
     int getHash(Object key) {
@@ -31,7 +27,7 @@ public class HashTable {
     }
 
     void setThreshold(int length) {
-        threshold = (int)(length * loadFactor);
+        threshold = (int) (length * loadFactor);
     }
 
     Entry[] arrayResize() {
@@ -51,7 +47,6 @@ public class HashTable {
             bigArray[hash] = new Entry(array[i].key, array[i].value);
             places--;
         }
-
 
         return bigArray;
     }
@@ -119,9 +114,9 @@ public class HashTable {
 
     static class Entry {
 
-        Object key;
-        Object value;
-        Boolean deleted;
+        private Object key;
+        private Object value;
+        private boolean deleted;
 
         Entry(Object key_, Object value_) {
             key = key_;
